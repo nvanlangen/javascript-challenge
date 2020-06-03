@@ -37,16 +37,24 @@ function resetFilters() {
 function buildTable(data) {
     var tbody = d3.select("tbody");
     tbody.html("");
-    data.forEach((UFOSighting) => {
-        var row = tbody.append("tr");
-        Object.entries(UFOSighting).forEach(([key, value]) => {
-            var cell = row.append("td");
-            cell.text(value);
+    if (data.length > 0) {
+        data.forEach((UFOSighting) => {
+            var row = tbody.append("tr");
+            Object.entries(UFOSighting).forEach(([key, value]) => {
+                var cell = row.append("td");
+                cell.text(value);
+            });
         });
-    });
+    }
+    else {
+        var row = tbody.append("tr");
+        var cell = row.append("td").attr("colspan", 7).attr("style","text-align:center;");
+        cell.text("No results meeting the criteria were found.");
+    }
 }
 
 function populateCountryList(data) {
+    console.log("popCountry");
     var countries = [];
     var countryList = d3.select("#selcountry");
     data.forEach((UFOSighting) => {
@@ -69,6 +77,7 @@ function populateCountryList(data) {
 }
 
 function populateStateList(data) {
+    console.log("popState");
     var states = [];
     var stateList = d3.select("#selstate");
     data.forEach((UFOSighting) => {
@@ -91,6 +100,7 @@ function populateStateList(data) {
 }
 
 function populateCityList(data) {
+    console.log("popCity");
     var cities = [];
     var cityList = d3.select("#selcity");
     data.forEach((UFOSighting) => {
@@ -186,12 +196,12 @@ function runEnter() {
 resetFilters();
 
 function resetStateList() {
+    console.log("ResetState");
     var inputCountry = d3.select("#selcountry");
     var inputCountryValue = inputCountry.property("value");
 
     var filteredData = tableData;
-    if (inputCountryValue != "All") 
-    {
+    if (inputCountryValue != "All") {
         var filteredData = tableData.filter(UFOSighting => UFOSighting.country === inputCountryValue);
     }
     populateStateList(filteredData);
@@ -199,17 +209,16 @@ function resetStateList() {
 }
 
 function resetCityList() {
+    console.log("resetCity");
     var inputState = d3.select("#selstate");
     var inputStateValue = inputState.property("value");
 
     var filteredData = tableData;
-    if (inputStateValue != "All") 
-    {
+    if (inputStateValue != "All") {
         var filteredData = tableData.filter(UFOSighting => UFOSighting.state === inputStateValue);
         populateCityList(filteredData);
     }
-    else
-    {
+    else {
         resetStateList();
     }
 }

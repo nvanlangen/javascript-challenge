@@ -8,21 +8,26 @@ var form = d3.select("form");
 
 // Create event handlers 
 button.on("click", runEnter);
-form.on("submit",runEnter);
+form.on("submit", runEnter);
 
 function buildTable(data) {
     var tbody = d3.select("tbody");
     tbody.html("");
-    data.forEach((UFOSighting) => {
-        var row = tbody.append("tr");
-        Object.entries(UFOSighting).forEach(([key, value]) => {
-            var cell = row.append("td");
-            cell.text(value);
+    if (data.length > 0) {
+        data.forEach((UFOSighting) => {
+            var row = tbody.append("tr");
+            Object.entries(UFOSighting).forEach(([key, value]) => {
+                var cell = row.append("td");
+                cell.text(value);
+            });
         });
-    });
+    }
+    else {
+        var row = tbody.append("tr");
+        var cell = row.append("td").attr("colspan", 7).attr("style","text-align:center;");
+        cell.text("No results meeting the criteria were found.");
+    }
 }
-
-buildTable(tableData);
 
 function runEnter() {
 
@@ -34,9 +39,13 @@ function runEnter() {
 
     // Get the value property of the input element
     var inputValue = inputElement.property("value");
+    var filteredData = tableData;
 
-    var filteredData = tableData.filter(UFOSighting => UFOSighting.datetime === inputValue);
+    if (inputValue != "") {
+        filteredData = filteredData.filter(UFOSighting => UFOSighting.datetime === inputValue);
+    }
 
     buildTable(filteredData);
-
 }
+
+buildTable(tableData);
