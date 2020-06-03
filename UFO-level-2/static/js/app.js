@@ -6,11 +6,16 @@ var tableData = data;
 var button = d3.select("#filter-btn");
 var form = d3.select("form");
 var reset = d3.select("#reset-btn");
+var dateinput = d3.select("#datetime");
 
 // Create event handlers 
 button.on("click", runEnter);
-form.on("submit", runEnter);
+form.on("submit", doNothing);
 reset.on("click", resetFilters);
+
+function doNothing() {
+    d3.event.preventDefault();
+}
 
 function resetFilters() {
 
@@ -126,7 +131,8 @@ function populateShapeList() {
     }
 }
 
-resetFilters();
+
+
 
 function runEnter() {
 
@@ -172,3 +178,5 @@ function runEnter() {
     buildTable(filteredData);
 
 }
+
+resetFilters();
