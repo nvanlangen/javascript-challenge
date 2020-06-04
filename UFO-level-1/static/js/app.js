@@ -35,10 +35,8 @@ function runEnter() {
     d3.event.preventDefault();
 
     // Select the input element and get the raw HTML node
-    var inputElement = d3.select("#datetime");
+    var inputValue = d3.select("#datetime").property("value");
 
-    // Get the value property of the input element
-    var inputValue = inputElement.property("value");
     var filteredData = tableData;
 
     if (inputValue != "") {

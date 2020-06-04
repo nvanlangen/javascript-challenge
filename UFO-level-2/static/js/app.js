@@ -6,12 +6,11 @@ var tableData = data;
 var button = d3.select("#filter-btn");
 var form = d3.select("form");
 var reset = d3.select("#reset-btn");
-
 var cntrySel = d3.select("#selcountry");
 var stateSel = d3.select("#selstate");
 
 // Create event handlers 
-button.on("click", runEnter);
+button.on("click", runSearch);
 form.on("submit", doNothing);
 reset.on("click", resetFilters);
 cntrySel.on("change", resetStateList);
@@ -25,13 +24,13 @@ function resetFilters() {
 
     var inputDate = d3.select("#datetime");
     inputDate.property("value", "");
-    populateCountryList(tableData);
-    populateCityList(tableData);
-    populateStateList(tableData);
-    populateShapeList();
+
+    populateSelectList(tableData.map(obj => obj.country),"#selcountry");
+    populateSelectList(tableData.map(obj => obj.state),"#selstate");
+    populateSelectList(tableData.map(obj => obj.city),"#selcity");
+    populateSelectList(tableData.map(obj => obj.shape),"#selshape");
 
     buildTable(tableData);
-
 }
 
 function buildTable(data) {
@@ -53,116 +52,17 @@ function buildTable(data) {
     }
 }
 
-function populateCountryList(data) {
-    var countries = [];
-    var countryList = d3.select("#selcountry");
-    data.forEach((UFOSighting) => {
-        var bFound = false;
-        for (var i = 0; i < countries.length; i++) {
-            if (UFOSighting.country === countries[i]) {
-                bFound = true;
-            }
-        }
-        if (!bFound) {
-            countries.push(UFOSighting.country);
-        }
-    });
-    countries.sort();
-    countryList.html("");
-    countryList.append("option").property("value", "All").text("All");
-    for (var i = 0; i < countries.length; i++) {
-        countryList.append("option").property("value", countries[i]).text(countries[i]);
-    }
-}
-
-function populateStateList(data) {
-    var states = [];
-    var stateList = d3.select("#selstate");
-    data.forEach((UFOSighting) => {
-        var bFound = false;
-        for (var i = 0; i < states.length; i++) {
-            if (UFOSighting.state === states[i]) {
-                bFound = true;
-            }
-        }
-        if (!bFound) {
-            states.push(UFOSighting.state);
-        }
-    });
-    states.sort();
-    stateList.html("");
-    stateList.append("option").property("value", "All").text("All");
-    for (var i = 0; i < states.length; i++) {
-        stateList.append("option").property("value", states[i]).text(states[i]);
-    }
-}
-
-function populateCityList(data) {
-    var cities = [];
-    var cityList = d3.select("#selcity");
-    data.forEach((UFOSighting) => {
-        var bFound = false;
-        for (var i = 0; i < cities.length; i++) {
-            if (UFOSighting.city === cities[i]) {
-                bFound = true;
-            }
-        }
-        if (!bFound) {
-            cities.push(UFOSighting.city);
-        }
-    });
-    cities.sort();
-    cityList.html("");
-    cityList.append("option").property("value", "All").text("All");
-    for (var i = 0; i < cities.length; i++) {
-        cityList.append("option").property("value", cities[i]).text(cities[i]);
-    }
-}
-
-function populateShapeList() {
-    var shapes = [];
-    var shapeList = d3.select("#selshape");
-
-    tableData.forEach((UFOSighting) => {
-        var bFound = false;
-        for (var i = 0; i < shapes.length; i++) {
-            if (UFOSighting.shape === shapes[i]) {
-                bFound = true;
-            }
-        }
-        if (!bFound) {
-            shapes.push(UFOSighting.shape);
-        }
-    });
-    shapes.sort();
-    shapeList.html("");
-    shapeList.append("option").property("value", "All").text("All");
-    for (var i = 0; i < shapes.length; i++) {
-        shapeList.append("option").property("value", shapes[i]).text(shapes[i]);
-    }
-}
-
-
-
-
-function runEnter() {
+function runSearch() {
 
     // Prevent the page from refreshing
     d3.event.preventDefault();
 
     // Select the input element and get the raw HTML node
-    var inputDate = d3.select("#datetime");
-    var inputCountry = d3.select("#selcountry");
-    var inputState = d3.select("#selstate");
-    var inputCity = d3.select("#selcity");
-    var inputShape = d3.select("#selshape")
-
-    // Get the value property of the input element
-    var inputDateValue = inputDate.property("value");
-    var inputCountryValue = inputCountry.property("value");
-    var inputStateValue = inputState.property("value");
-    var inputCityValue = inputCity.property("value");
-    var inputShapeValue = inputShape.property("value");
+    var inputDateValue = d3.select("#datetime").property("value");
+    var inputCountryValue = d3.select("#selcountry").property("value");
+    var inputStateValue = d3.select("#selstate").property("value");
+    var inputCityValue = d3.select("#selcity").property("value");
+    var inputShapeValue = d3.select("#selshape").property("value")
 
     var filteredData = tableData;
 
@@ -187,32 +87,53 @@ function runEnter() {
     }
 
     buildTable(filteredData);
-
 }
 
 function resetStateList() {
-    var inputCountry = d3.select("#selcountry");
-    var inputCountryValue = inputCountry.property("value");
+    var inputCountryValue = d3.select("#selcountry").property("value");
 
     var filteredData = tableData;
     if (inputCountryValue != "All") {
         var filteredData = tableData.filter(UFOSighting => UFOSighting.country === inputCountryValue);
     }
-    populateStateList(filteredData);
-    populateCityList(filteredData);
+
+    populateSelectList(filteredData.map(obj => obj.state),"#selstate");
+    populateSelectList(filteredData.map(obj => obj.city),"#selcity");
 }
 
 function resetCityList() {
-    var inputState = d3.select("#selstate");
-    var inputStateValue = inputState.property("value");
+    var inputStateValue = d3.select("#selstate").property("value");
 
     var filteredData = tableData;
     if (inputStateValue != "All") {
         var filteredData = tableData.filter(UFOSighting => UFOSighting.state === inputStateValue);
-        populateCityList(filteredData);
+        populateSelectList(filteredData.map(obj => obj.city),"#selcity");
     }
     else {
         resetStateList();
+    }
+}
+
+function populateSelectList(data,selID) {
+    var values = [];
+    var valueList = d3.select(selID);
+
+    data.forEach((UFOSighting) => {
+        var bFound = false;
+        for (var i = 0; i < values.length; i++) {
+            if (UFOSighting === values[i]) {
+                bFound = true;
+            }
+        }
+        if (!bFound) {
+            values.push(UFOSighting);
+        }
+    });
+    values.sort();
+    valueList.html("");
+    valueList.append("option").property("value", "All").text("All");
+    for (var i = 0; i < values.length; i++) {
+        valueList.append("option").property("value", values[i]).text(values[i]);
     }
 }
 
