@@ -54,7 +54,6 @@ function buildTable(data) {
 }
 
 function populateCountryList(data) {
-    console.log("popCountry");
     var countries = [];
     var countryList = d3.select("#selcountry");
     data.forEach((UFOSighting) => {
@@ -77,7 +76,6 @@ function populateCountryList(data) {
 }
 
 function populateStateList(data) {
-    console.log("popState");
     var states = [];
     var stateList = d3.select("#selstate");
     data.forEach((UFOSighting) => {
@@ -100,7 +98,6 @@ function populateStateList(data) {
 }
 
 function populateCityList(data) {
-    console.log("popCity");
     var cities = [];
     var cityList = d3.select("#selcity");
     data.forEach((UFOSighting) => {
@@ -193,10 +190,7 @@ function runEnter() {
 
 }
 
-resetFilters();
-
 function resetStateList() {
-    console.log("ResetState");
     var inputCountry = d3.select("#selcountry");
     var inputCountryValue = inputCountry.property("value");
 
@@ -209,7 +203,6 @@ function resetStateList() {
 }
 
 function resetCityList() {
-    console.log("resetCity");
     var inputState = d3.select("#selstate");
     var inputStateValue = inputState.property("value");
 
@@ -222,3 +215,5 @@ function resetCityList() {
         resetStateList();
     }
 }
+
+resetFilters();
