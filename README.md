@@ -10,7 +10,7 @@ The html form contains an entry field and a button.
 
 The seach is triggered two different ways.  One method is to enter a date in the field and press the enter key. The other is to enter a date in the field and click the Filter button.
 
-The provided data is searched for by data and displayed on the page.  If no data is found a message is displayed that no data is found for that date.
+The provided data is searched for by date and displayed on the page.  If no data is found a message is displayed that no data is found for that date.
 
 If the date field contains the default of All Dates, the entire set of provided data is displayed.
 
@@ -22,7 +22,7 @@ The html form contains an entry field for date and drop down lists for country, 
 
 On the initial opening of the page, the entire data set is displayed and the default value of All is set for each search criterion.
 
-The search can only be triggered by clicking the filter button.  This was done because hitting enter from the date field may prevent additional filters to be selected.
+The search can only be triggered by clicking the filter button.  This was done because hitting enter from the date field may prevent additional filters from being selected.
 
 To make the locations easier to choose the City drop down list will only display cities for the selected Country and State. The state drop down list will only display entries for the selected Country.
 
