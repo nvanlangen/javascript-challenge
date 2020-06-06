@@ -1,15 +1,18 @@
 // from data.js
 var tableData = data;
 
-// YOUR CODE HERE!
+// Assign button and form elements using d3
 
 var button = d3.select("#filter-btn");
 var form = d3.select("form");
 
 // Create event handlers 
-button.on("click", runEnter);
-form.on("submit", runEnter);
+button.on("click", runSearch);
+form.on("submit", runSearch);
 
+// Function: buildTable
+// Parameter: data, contains all data or filtered data
+// Formats the html table
 function buildTable(data) {
     var tbody = d3.select("tbody");
     tbody.html("");
@@ -29,21 +32,27 @@ function buildTable(data) {
     }
 }
 
-function runEnter() {
+// Function: runSearch
+// Triggerd by either buttob click or clicking enter in the date input box
+function runSearch() {
 
     // Prevent the page from refreshing
     d3.event.preventDefault();
 
-    // Select the input element and get the raw HTML node
+    // Select the input element and get value
     var inputValue = d3.select("#datetime").property("value");
 
+    // Set filered data to the entire dataset
     var filteredData = tableData;
 
+    // Check if a date was entered, if yes filter on that date
     if (inputValue != "") {
         filteredData = filteredData.filter(UFOSighting => UFOSighting.datetime === inputValue);
     }
 
+    // Call function to build the html table
     buildTable(filteredData);
 }
 
+// Builds table with all data on initial opening of the page and on refresh
 buildTable(tableData);
